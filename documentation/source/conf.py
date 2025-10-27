@@ -98,6 +98,7 @@ extensions = [
 
 
 # pylint: disable=invalid-name
+always_use_bars_union = True
 toc_object_entries_show_parents = "hide"  # don't show prefix in secondary TOC
 # pylint: enable=invalid-name
 
