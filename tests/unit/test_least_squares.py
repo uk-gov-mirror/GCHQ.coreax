@@ -103,35 +103,31 @@ class InverseApproximationTest(ABC, Generic[_RegularisedLeastSquaresSolver]):
         ) == pytest.approx(0.0, abs=1e-1)
 
 
-class TestMinimalEuclideanNormSolver:
+class TestMinimalEuclideanNormSolver(InverseApproximationTest):
     """Test `MinimalEuclideanNormSolver`."""
 
+    @override
     @pytest.fixture(scope="class")
     def approximator(self) -> MinimalEuclideanNormSolver:
         """Pytest fixture returns an initialised `MinimalEuclideanNormSolver`."""
         return MinimalEuclideanNormSolver(rcond=None)
 
-    def test_approximator_accuracy(
-        self, approximator: MinimalEuclideanNormSolver
-    ) -> None:
-        """
-        Test `MinimalEuclideanNormSolver` is accurate via an analytical example.
-
-        We focus on recovering the inverse of an array.
-        """
-        regularisation_parameter = 1
+    @override
+    @pytest.fixture(scope="class")
+    def problem(self) -> _InverseProblem:
+        random_key = jr.key(2_024)
         identity = jnp.eye(2)
         array = jnp.ones((2, 2))
-
-        expected_output = jnp.array([[2 / 3, -1 / 3], [-1 / 3, 2 / 3]])
-
-        output = approximator.solve(
-            array=array,
-            regularisation_parameter=regularisation_parameter,
-            target=identity,
-            identity=identity,
+        regularisation_parameter = 1
+        expected_inverse = jnp.array([[2 / 3, -1 / 3], [-1 / 3, 2 / 3]])
+        return _InverseProblem(
+            random_key,
+            array,
+            regularisation_parameter,
+            identity,
+            identity,
+            expected_inverse,
         )
-        assert jnp.linalg.norm(output - expected_output) == pytest.approx(0.0, abs=1e-3)
 
     @pytest.mark.parametrize(
         "array, identity, rcond, context",

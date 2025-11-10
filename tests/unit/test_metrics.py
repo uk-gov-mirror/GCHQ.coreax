@@ -54,7 +54,7 @@ class TestMMD:
     Tests related to the maximum mean discrepancy (MMD) class in metrics.py.
     """
 
-    @pytest.fixture
+    @pytest.fixture(scope="class")
     def problem(self) -> _MetricProblem:
         """Generate an example problem for testing MMD."""
         dimension = 10
@@ -234,7 +234,7 @@ class TestKSD:
     Tests related to the kernel Stein discrepancy (KSD) class in metrics.py.
     """
 
-    @pytest.fixture
+    @pytest.fixture(scope="class")
     def problem(self) -> _MetricProblem:
         """Generate an example problem for testing KSD."""
         dimension = 1

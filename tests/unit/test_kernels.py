@@ -374,7 +374,7 @@ class TestPowerKernel(
             num_points=self.mock_num_points, dimension=self.mock_dimension
         ).to_power_kernel(self.power)
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(self, request: pytest.FixtureRequest, kernel: PowerKernel) -> _Problem:
         r"""
         Test problems for the Power kernel.
@@ -543,7 +543,7 @@ class TestAdditiveKernel(
             num_points=self.mock_num_points, dimension=self.mock_dimension
         ).to_additive_kernel()
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(
         self, request: pytest.FixtureRequest, kernel: AdditiveKernel
     ) -> _Problem:
@@ -654,7 +654,7 @@ class TestProductKernel(
             num_points=self.mock_num_points, dimension=self.mock_dimension
         ).to_product_kernel()
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(
         self, request: pytest.FixtureRequest, kernel: ProductKernel
     ) -> _Problem:
@@ -793,7 +793,7 @@ class TestLinearKernel(
         output_scale, constant = jnp.abs(jr.normal(key=jr.key(random_seed), shape=(2,)))
         return LinearKernel(output_scale, constant)
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(self, request: pytest.FixtureRequest, kernel: LinearKernel) -> _Problem:
         r"""
         Test problems for the Linear kernel.
@@ -895,7 +895,7 @@ class TestPoissonKernel(
         )
         return PoissonKernel(index, output_scale)
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(
         self, request: pytest.FixtureRequest, kernel: PoissonKernel
     ) -> _Problem:
@@ -1168,7 +1168,7 @@ class TestPolynomialKernel(
             degree=int(jnp.ceil(jnp.abs(parameters[2]))) + 1,
         )
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(self, request, kernel: PolynomialKernel) -> _Problem:
         r"""
         Test problems for the Polynomial kernel.
@@ -1326,7 +1326,8 @@ class TestSquaredExponentialKernel(
             "large_negative_length_scale",
             "near_zero_length_scale",
             "negative_output_scale",
-        ]
+        ],
+        scope="class",
     )
     def problem(  # noqa: C901
         self, request: pytest.FixtureRequest, kernel: SquaredExponentialKernel
@@ -1510,7 +1511,8 @@ class TestMaternKernel(BaseKernelTest[MaternKernel], KernelMeanTest[MaternKernel
             "floats_degree_greater_than_zero",
             "vectors_degree_greater_than_zero",
             "arrays_degree_greater_than_zero",
-        ]
+        ],
+        scope="class",
     )
     def problem(  # noqa: C901
         self, request: pytest.FixtureRequest, kernel: MaternKernel
@@ -1640,7 +1642,7 @@ class TestExponentialKernel(
             length_scale=parameters[0].item(), output_scale=parameters[1].item()
         )
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(self, request, kernel: ExponentialKernel) -> _Problem:  # noqa: C901
         r"""
         Test problems for the Exponential kernel.
@@ -1788,7 +1790,8 @@ class TestRationalQuadraticKernel(
             "large_negative_length_scale",
             "near_zero_length_scale",
             "negative_output_scale",
-        ]
+        ],
+        scope="class"
     )
     def problem(  # noqa: C901
         self, request, kernel: RationalQuadraticKernel
@@ -1942,7 +1945,7 @@ class TestPeriodicKernel(
             periodicity=parameters[2].item(),
         )
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(self, request, kernel: PeriodicKernel) -> _Problem:  # noqa: C901
         r"""
         Test problems for the PeriodicKernel kernel.
@@ -2120,7 +2123,7 @@ class TestLocallyPeriodicKernel(
             squared_exponential_output_scale=parameters[4].item(),
         )
 
-    @pytest.fixture(params=["floats", "vectors", "arrays"])
+    @pytest.fixture(params=["floats", "vectors", "arrays"], scope="class")
     def problem(self, request, kernel: LocallyPeriodicKernel) -> _Problem:  # noqa: C901
         r"""
         Test problems for the LocallyPeriodicKernel kernel.
@@ -2218,7 +2221,8 @@ class TestLaplacianKernel(
             "large_negative_length_scale",
             "near_zero_length_scale",
             "negative_output_scale",
-        ]
+        ],
+        scope="class"
     )
     def problem(
         self, request: pytest.FixtureRequest, kernel: LaplacianKernel
@@ -2367,7 +2371,8 @@ class TestPCIMQKernel(
             "large_negative_length_scale",
             "near_zero_length_scale",
             "negative_output_scale",
-        ]
+        ],
+        scope="class"
     )
     def problem(self, request: pytest.FixtureRequest, kernel: PCIMQKernel) -> _Problem:
         r"""
@@ -2513,7 +2518,7 @@ class TestSteinKernel(BaseKernelTest[SteinKernel]):
         base_kernel = PCIMQKernel(length_scale, output_scale)
         return SteinKernel(base_kernel=base_kernel, score_function=jnp.negative)
 
-    @pytest.fixture
+    @pytest.fixture(scope="class")
     def problem(self, request: pytest.FixtureRequest, kernel: SteinKernel) -> _Problem:
         """Test problem for the Stein kernel."""
         length_scale = 1 / np.sqrt(2)

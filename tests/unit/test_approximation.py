@@ -62,7 +62,7 @@ class TestRandomRegressionApproximations:
     Tests related to ``RandomRegressionKernels`` in approximation.py .
     """
 
-    @pytest.fixture
+    @pytest.fixture(scope="class")
     def problem(self) -> _Problem:
         r"""
         Define data shared across tests.

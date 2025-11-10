@@ -21,12 +21,17 @@ import jax
 import pytest
 
 
-@pytest.fixture(params=["with_jit", "without_jit"], scope="class")
+@pytest.fixture(autouse=True)
+def clear_caches():
+    """Clear the jax compilation cache."""
+    jax.clear_caches()
+
+
+@pytest.fixture(params=["with_jit", "without_jit"], scope="session")
 def jit_variant(request: pytest.FixtureRequest) -> Callable[[Callable], Callable]:
     """Return a callable that (may) JIT compile a passed callable."""
     if request.param == "without_jit":
         return jax.tree_util.Partial
     if request.param == "with_jit":
-        jax.clear_caches()
         return eqx.filter_jit
     raise ValueError("Invalid fixture parametrization.")

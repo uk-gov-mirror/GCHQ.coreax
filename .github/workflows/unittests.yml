@@ -40,7 +40,7 @@ jobs:
     - name: Debug - uv pip freeze
       run: uv pip freeze
     - name: Test with pytest
-      run: uv run pytest --ignore=tests/integration -n auto --dist worksteal
+      run: uv run pytest --ignore=tests/integration
     # Integration tests are slow, so only run if all other tests pass.
     - name: Test integration tests
-      run: uv run pytest tests/integration -n auto --dist worksteal
+      run: uv run pytest tests/integration
